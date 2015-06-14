@@ -1,0 +1,56 @@
+﻿body
+{
+    text-align:center;
+    width: 650px;
+    margin: 0 auto;
+}
+.content {
+    background-color: lightgray;
+    border: 5px solid black;
+}
+
+.mainContent
+ {
+	font-weight: bold;
+    overflow: hidden;
+    padding: 0 17px 4px;
+}
+
+h1
+{
+	font-style: italic;
+    margin-top:75px;
+}
+
+ul
+{ 
+    display: block; 
+    list-style-type: square;
+    margin-top:75px;
+}
+ 
+.leftCol
+{
+    float: left;
+    max-width:300px;
+}
+
+.rightCol
+{
+    float: right;
+    max-width:150px;
+   	margin-top:125px;
+    margin-right: 129px;
+}
+
+.screenShot
+{
+    width: 180px;
+    height: 400px;
+    margin-top: 40px;
+}
+
+li
+{
+    padding: 5px;
+}

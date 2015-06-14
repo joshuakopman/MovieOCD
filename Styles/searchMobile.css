@@ -1,0 +1,323 @@
+﻿
+body {
+    margin: 0 auto;
+    width: 400px;
+    font-family: Times New Roman;
+    padding: 0;
+}
+#topSearch {
+   background-size: 100% auto;
+   background-color: lightgrey;
+   background-image: url("logo.png");
+   min-height: 115px;
+    background-repeat: no-repeat;
+}
+#bottomSearch {
+    z-index: 100;
+    position: relative;
+    display: none;
+}
+.mainContent {
+    border: 5px solid black;
+    background-color: lightgrey;
+    position: relative;
+    overflow: hidden;
+}
+.searchBar {
+    margin: 10px 40px;
+    text-align: center;
+    overflow: hidden;
+}
+.searchImage {
+    float: left;
+    margin: 10px 180px;
+    padding: 10px;
+    height: 200px;
+    width: 200px;
+}
+.searchTitle {
+    font-size: 30px;
+    font-weight: bold;
+    color: grey;
+    max-width: 300px;
+    text-align: center;
+}
+.searchResults {
+    color: white;
+    overflow: hidden;
+    margin: 20px 0 0 0;
+    padding: 7px 7px 7px 37px;
+}
+.searchResultsSuggested {
+    padding: 10px;
+    max-height: 340px;
+    float: left;
+    margin-left: 26px;
+}
+.rating {
+    padding: 10px;
+    margin-left: 45px;
+    color: gray;
+    font-weight: bold;
+    cursor: default;
+}
+#foundTitle {
+    margin: 10px;
+    overflow: hidden;
+    display: none;
+}
+
+#progressbar {
+    margin: 10px 10px 50px 140px;
+    display: none;
+}
+
+#btnSubmit {
+    height : 30px;
+    width : 30px;
+    margin-top: 5px;
+}
+
+.glassDiv {
+    float: left;
+    margin: 4px 0 13px;
+}
+
+.movieNameDiv {
+     float: left;
+    margin: 6px 3px 0px;
+}
+
+.suggTitle{
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+}
+.suggTitle:hover{
+    color: darkgray;
+}
+#divider {
+    background-color: black;
+    height: 5px;
+    margin: 0;
+    padding: 0;
+    display: none;
+}
+
+
+#txtMovieName:hover
+{
+    border:1px solid #cccccc;
+}
+#txtMovieName:focus
+{
+    box-shadow:0 0 2px #FFFE00;
+}
+#txtMovieName {
+    font-family: times new roman;
+    color: gray;
+    padding: 6px 10px 6px 10px;
+    border: 1px solid #DDDDDD;
+    
+    /*Applying CSS3 gradient*/
+    background: -moz-linear-gradient(center top , #FFFFFF,  #EEEEEE 1px, #FFFFFF 20px);    
+    background: -webkit-gradient(linear, left top, left 20, from(#FFFFFF), color-stop(5%, #EEEEEE) to(#FFFFFF));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FBFBFB', endColorstr='#FFFFFF');
+    
+    /*Applying CSS 3radius*/   
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    
+    /*Applying CSS3 box shadow*/
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+    box-shadow: 0 0 2px #DDDDDD;
+}
+
+
+.providerLogo {
+    height: 40px;
+    width: 40px;
+    border: 2px solid gray;
+    float: left;
+}
+
+.providerLogo:hover {
+    border-color: black;
+}
+
+.editorPick {
+    height: 80px;
+    width: 80px;
+    border: 3px solid gold;
+    border-radius: 15px 15px 15px 15px;
+}
+
+#movieImg {
+    display: none;
+    float: left;
+    height: 330px;
+    width: 240px;
+    margin-left: 50px;
+}
+
+#suggheader {
+    margin-top: 20px;
+    text-align: center;
+    margin-right: 85px;
+    color: grey;
+    font-weight: bold;
+}
+
+#movieImage{
+    margin-left: 20px;
+    float: left;
+}
+#movieContent{
+    float: left;
+    width: 287px;
+    margin-left: 60px;
+}
+#titleResult{
+    color: black;
+}
+#titleResult:hover 
+{
+    color: darkgrey;
+    cursor: pointer;
+}
+#displaySearchHistory 
+{
+    display: none;
+    text-align: center;
+    margin-top: 15px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: lightgrey;
+    margin-left: 65px;
+    float: left;
+    margin-bottom: 15px;
+}
+#displaySearchHistory:hover {
+    color: darkgrey;
+}
+#searchHistory {
+    background-color: lightgrey;
+    height: 400px;
+    overflow: auto;
+}
+.historyTitle {
+    border: 1px solid black;
+    text-align: center;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
+.historyTitle:hover 
+{
+    color: lightgrey;
+    cursor: pointer;
+}
+h1 {
+    text-align: center;
+    font-weight: bold;
+    color: grey;
+    display: none;
+    margin-bottom: 10px;
+}
+.thumbnail {
+    height: 30px;
+    width:30px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.historyRatings {
+    text-align: center;
+    font-weight: bold;
+    background: none repeat scroll 0 0 grey;
+    cursor: default;
+}
+
+#rateMyMovie 
+{  
+    display: none;
+    height: 330px;
+    width: 240px;
+    margin-left: 50px;
+    z-index: 2;
+    position:absolute;
+    top:0; 
+    left:20px;
+    opacity: .7;
+}
+#rateMyMovieText {
+    display: none;
+    z-index: 2;
+    position:absolute;
+    top:50px; 
+    left:120px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+#stars 
+{
+    display: none;
+    z-index: 2;
+    position:absolute;
+    top:200px; 
+    left:110px;
+}
+.ratingValue
+{
+    display: none;
+    z-index: 2;
+    position:absolute;
+    top:250px; 
+    left:110px;
+    color: white;
+    font-weight: bold;
+}
+.fb_iframe_widget {
+    display: none;
+    z-index: 2;
+    top:294px; 
+    left:153px;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#fb-logout 
+{
+    display: none;
+    z-index: 2;
+    top:302px; 
+    left:159px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+#chkfacebookShareDiv{
+    display: none;
+    z-index: 2;
+    top:274px; 
+    left:110px;
+    color: #647CAE;
+    font-weight: bold;
+    font-size: 16px;
+}
+.toolTip {
+    color: white !important; 
+    background:black !important; 
+    font-family : Times New Roman !important;
+        opacity: .7;
+}
+#headerLogo {
+    margin-left: 132px;
+    height: 85px;
+    width: 125px;
+    margin-top: 5px;
+}

@@ -1,0 +1,17 @@
+﻿@model MovieOCD.DTO.OpenGraphDTO
+@{
+    Layout = null;
+    var moviePath = String.IsNullOrEmpty(Model.MovieImagePath) ? "http://www.movieocd.com/styles/logo.png" : Model.MovieImagePath;
+    var summary = String.IsNullOrEmpty(Model.PlotSummary) ? "" : Model.PlotSummary;
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta property="fb:app_id"      content="118454408341531" /> 
+        <meta property="og:type"        content="video.movie" /> 
+        <meta property="og:title"       content="@Model.MovieName" /> 
+        <meta property="og:image"       content="@Server.UrlDecode(moviePath)" />
+        <meta property="og:description"       content="@Server.UrlDecode(summary)" />
+        <meta http-equiv="refresh" content="0;URL=http://www.movieocd.com/"> 
+    </head>
+</html>

@@ -1,0 +1,27 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/EditorPickController.cs">
+    <Files>
+      <File FileName="App_Start/FilterConfig.cs" Line="1" Column="1" />
+      <File FileName="App_Start/WebApiConfig.cs" Line="11" Column="28" />
+      <File FileName="DataAccess/Context/MovieOCDDB.cs" Line="1" Column="1" />
+      <File FileName="Controllers/EditorPickController.cs" Line="19" Column="10" />
+      <File FileName="Web.config" Line="1" Column="1" />
+      <File FileName="Controllers/OpenGraphController.cs" Line="1" Column="1" />
+      <File FileName="ServiceManagers/IServiceManager.cs" Line="1" Column="1" />
+      <File FileName="ServiceManagers/RottenTomatoesServiceManager.cs" Line="1" Column="1" />
+      <File FileName="Scripts/MovieView.js" Line="1" Column="1" />
+      <File FileName="Controllers/MovieController.cs" Line="1" Column="1" />
+      <File FileName="BusinessLogic/MovieManager.cs" Line="1" Column="1" />
+      <File FileName="packages.config" Line="1" Column="1" />
+      <File FileName="DataAccess/Repositories/EditorPickRepository.cs" Line="1" Column="1" />
+      <File FileName="Global.asax.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/joshuakopman/Projects/MovieOCD/App_Start/WebApiConfig.cs" line="11" column="28" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

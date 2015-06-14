@@ -1,0 +1,8 @@
+C:\Users\jkopman\Desktop\MovieApp\MovieApp\MovieApp\bin\MovieApp.dll
+C:\Users\jkopman\Desktop\MovieApp\MovieApp\MovieApp\bin\MovieApp.pdb
+C:\Users\jkopman\Desktop\MovieApp\MovieApp\MovieApp\bin\Elmah.dll
+C:\Users\jkopman\Desktop\MovieApp\MovieApp\MovieApp\bin\EntityFramework.dll
+C:\Users\jkopman\Desktop\MovieApp\MovieApp\MovieApp\bin\EntityFramework.xml
+C:\Users\jkopman\Desktop\MovieApp\MovieApp\MovieApp\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\jkopman\Desktop\MovieApp\MovieApp\MovieApp\obj\Debug\MovieApp.dll
+C:\Users\jkopman\Desktop\MovieApp\MovieApp\MovieApp\obj\Debug\MovieApp.pdb
