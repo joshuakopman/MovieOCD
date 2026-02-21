@@ -153,9 +153,15 @@
             this.repaintView();
         },
         facebooklogout: function() {
-            FB.logout();
+            if (window.FB && window.location.protocol === 'https:') {
+                FB.logout();
+            }
         },
         rateMovie: function(ev) {
+                if (!window.FB || window.location.protocol !== 'https:') {
+                    $("#stars,#rateMyMovie,#rateMyMovieText,.ratingValue,.fb_iframe_widget,#fb-logout,#chkfacebookShareDiv").hide();
+                    return;
+                }
                 var self = this;
                 FB.getLoginStatus(function (response) {
                 if (response.status === 'connected') {
@@ -177,7 +183,7 @@
               });
         },
         saveRating: function(event, value) {
-            if ($("#chkfacebookShare").attr('checked')) {
+            if ($("#chkfacebookShare").attr('checked') && window.FB && window.location.protocol === 'https:') {
                 postLike(currentMovieName, value, currentMovieImagePath,this.summary);
             }
             var request  = new Object();
@@ -254,25 +260,7 @@
                 }
             });
         },
-        callSignalR: function () {
-            var movie = $.connection.movieHub;
-            // Create a function that the hub can call to broadcast messages.
-            movie.client.broadcastMessage = function (value) {
-                $("#latestScore").show();
-                $("#scoreValue").html(value.Votes+' '+ new Date());
-            };
-            // Start the connection.
-            $.connection.hub.start().done(function () {
-                // Call the Send method on the hub. 
-                movie.server.send($('#txtMovieName').val());
-                // Clear text box and reset focus for next comment. 
-                $('#txtMovieName').val('');
-                $('#txtMovieName').blur();
-            });
-        },
         searchForTitle: function () {
-            $.connection.hub.stop();
-            $("#latestScore").hide();
             var textbox = $("#txtMovieName");
             if (textbox.val() != "" && textbox.val() != "Search Titles") {
                 this.titleSearch(textbox.val(), '', this.DisplayResults);
@@ -364,7 +352,6 @@
 
             bottomSearchElement.show();
             suggTitlesElement.show();
-            collectionreference.callSignalR();
           //  searchTextBox.val('');
           //  searchTextBox.blur();
         },

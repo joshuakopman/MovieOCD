@@ -11,6 +11,10 @@ if (fbAppId === 'replace me') {
 
 // Additional JS functions here
 window.fbAsyncInit = function () {
+    if (window.location.protocol !== 'https:') {
+        return;
+    }
+
     FB.init({
         appId: fbAppId,        // App ID
         status: true,           // check login status
@@ -79,12 +83,17 @@ function makeTinyUrl(url) {
 
 
 function postLike(movieName, rating, movieImagePath,summary) {
+  if (!window.FB || window.location.protocol !== 'https:') {
+      return;
+  }
+
   var roundedRating = Math.round(rating);
+  var ogHost = window.location.origin;
   FB.api(
        '/me/video.rates',
        'post',
        {  
-           'movie': 'http://www.movieocd.com/opengraph/' + movieName + '?movieImagePath=' + encodeURIComponent(movieImagePath)+'&summary='+encodeURIComponent(summary),
+           'movie': ogHost + '/opengraph/' + movieName + '?movieImagePath=' + encodeURIComponent(movieImagePath)+'&summary='+encodeURIComponent(summary),
            'rating:value': roundedRating,
            'rating:scale': 5,
            'rating:normalized_value': roundedRating / 5,

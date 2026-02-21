@@ -21,6 +21,16 @@ namespace MovieOCD.Controllers
             {
                 try
                 {
+                    var useMockMovieData = string.Equals(ConfigurationManager.AppSettings["UseMockMovieData"], "On", StringComparison.OrdinalIgnoreCase);
+                    if (useMockMovieData)
+                    {
+                        var mockedResponse = MockMovieResponseFactory.TryGet(movieName, year);
+                        if (mockedResponse != null)
+                        {
+                            return Json(mockedResponse, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+
                     return Json(_movieMgr.RetrieveMovieData(movieName, year), JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception e)
