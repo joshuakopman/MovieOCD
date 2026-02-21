@@ -1,109 +1,84 @@
-﻿<html>
-  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# video: http://ogp.me/ns/video#">
-        <title>MovieOCD</title>
-        <meta name="description" content="Movie OCD - The One-Stop Rating Aggregator For The Most Obsessive Movie Buffs">
-        <meta name="keywords" content="Movie,Ratings,IMDB,Rotten Tomatoes,Netflix,Rating Aggregator,MovieOCD">
-        <meta name="author" content="Josh Kopman">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <link rel="shortcut icon" href="/favicon.ico">
-        <link rel="stylesheet" type="text/css" href="Styles/reset.css" />
-        <link rel='stylesheet' href='Styles/rateit.css'/>
-        <link rel='stylesheet' media='screen and (min-width : 640px)' href='Styles/searchDesktop.css' />
-        <link rel='stylesheet' media='screen and (min-device-width : 320px) and (max-width : 640px)' href='Styles/searchMobile.css' />
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-        <script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.6/underscore-min.js"></script>
-        <script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
-        <script src="Scripts/jquery.flip.min.js"></script>
-        <script src="Scripts/jquery-ui-1.10.2.custom.min.js"></script>
-        <script src="Scripts/jquery.rateit.min.js"></script>
-        <script src="Scripts/RatingProviders.js"></script>
-    </head>
-    <body>
-      <div id="fb-root"></div>
-        <div id="mockToast" class="mockToast" role="status" aria-live="polite">
-            <div class="mockToastBody">
-                <div class="mockToastTitle">Legacy Demo Mode</div>
-                <div class="mockToastText">This hosted version uses mocked movie data because original IMDb/Rotten Tomatoes/Netflix integrations were deprecated in 2014.</div>
-                <div class="mockToastHint"><strong>Try:</strong> Pulp Fiction, Inception, The Matrix</div>
-                <button id="dismissMockToast" class="mockToastClose" type="button" aria-label="Dismiss demo notice">x</button>
-            </div>
-        </div>
-        <div class="mainContent">
-            <a href="/">
-                <div id="topSearch">
-                    <img id="headerLogo" src="Styles/headerlogo.png"/>
-                </div>
-            </a>
-            <div class="searchBar">
-                <div class="movieNameDiv">
-                    <input id="txtMovieName" type="text" value="Search Titles" /> 
-                </div>
-                <div class="glassDiv">
-                    <input id="btnSubmit" type="image" src="Images/glass.png" value="Find" />
-                </div>
-                <div id="displaySearchHistory">View Recent Searches</div>
-            </div> 
-            <img id="progressbar" alt="progress" src="images/progress.gif"/>
-            <div id="bottomSearch">
-                <div id="movieResult">
-                    <div id="movieImage">
-                        <img id="movieImg"/>
-                        <img id="rateMyMovie" src="Images/rate.png"/>
-                        <div id="rateMyMovieText">Rate this movie</div>
-                        <img id="fb-logout" src="Images/fb_logout.png"/>
-                        <div
-                            class="fb-login-button"
-                            data-show-faces="false"
-                            data-width="200"
-                            data-max-rows="1"
-                            data-scope="publish_actions"
-                            data-perms="publish_actions"
-                            login_text="Connect">
-                        </div>
-                        <div id="chkfacebookShareDiv">
-                            Share To Facebook? 
-                            <input id="chkfacebookShare" type="checkbox"/>
-                        </div>
-                        <div id="stars" class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false" ></div>
-                        <div>
-                            <span class="ratingValue" id="value5"></span>
-                        </div>
-                    </div>
-                    <div id="movieContent">
-                        <div id="foundTitle"></div>
-                        <div class="searchResults" id="results">
-                            <div id="resultsDiv">
-                            </div>
-                        </div>
-                        <div id="suggheader">DID YOU MEAN?</div>
-                        <div class="searchResultsSuggested" id="suggestedTitles">
-                        </div>
-                    </div>
-                </div>
-                <h1>Recent Searches</h1>
-                <div id="searchHistory">
-                </div>
-            </div>
-        </div>
-        <script src="Scripts/Facebook.js"></script>
-        <script src="Scripts/MovieView.js"></script>
-        <script>
-            (function () {
-                var toast = document.getElementById('mockToast');
-                var closeBtn = document.getElementById('dismissMockToast');
-                if (!toast || !closeBtn) return;
-                setTimeout(function () {
-                    toast.className += ' isVisible';
-                }, 120);
+<html>
+  <head>
+    <title>MovieOCD</title>
+    <meta name="description" content="Movie OCD - The One-Stop Rating Aggregator For The Most Obsessive Movie Buffs">
+    <meta name="keywords" content="Movie,Ratings,IMDB,Rotten Tomatoes,Netflix,Rating Aggregator,MovieOCD">
+    <meta name="author" content="Josh Kopman">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" type="text/css" href="Styles/reset.css">
+    <link rel="stylesheet" href="Styles/rateit.css">
+    <link rel="stylesheet" media="screen and (min-width : 640px)" href="Styles/searchDesktop.css">
+    <link rel="stylesheet" media="screen and (min-device-width : 320px) and (max-width : 640px)" href="Styles/searchMobile.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="mockToast" class="mockToast" role="status" aria-live="polite">
+      <div class="mockToastBody">
+        <div class="mockToastTitle">Legacy Demo Mode</div>
+        <div class="mockToastText">This hosted version uses mocked movie data because original IMDb/Rotten Tomatoes/Netflix integrations were deprecated in 2014.</div>
+        <div class="mockToastHint"><strong>Try:</strong> Pulp Fiction, Inception, The Matrix</div>
+        <button id="dismissMockToast" class="mockToastClose" type="button" aria-label="Dismiss demo notice">x</button>
+      </div>
+    </div>
 
-                closeBtn.onclick = function () {
-                    toast.className = toast.className.replace(' isVisible', '') + ' isHidden';                    setTimeout(function () {
-                        toast.style.display = 'none';
-                    }, 220);
-                };
-            })();
-        </script>
-    </body>
+    <div class="mainContent">
+      <a href="./">
+        <div id="topSearch">
+          <img id="headerLogo" src="Styles/headerlogo.png" alt="MovieOCD">
+        </div>
+      </a>
+
+      <div class="searchBar">
+        <div class="movieNameDiv">
+          <input id="txtMovieName" type="text" value="Search Titles">
+        </div>
+        <div class="glassDiv">
+          <input id="btnSubmit" type="image" src="Images/glass.png" value="Find" alt="Find">
+        </div>
+        <div id="displaySearchHistory">View Recent Searches</div>
+      </div>
+
+      <img id="progressbar" alt="progress" src="Images/progress.gif">
+
+      <div id="bottomSearch">
+        <div id="movieResult">
+          <div id="movieImage">
+            <img id="movieImg" alt="Movie poster">
+          </div>
+          <div id="movieContent">
+            <div id="foundTitle"></div>
+            <div class="searchResults" id="results">
+              <div id="resultsDiv"></div>
+            </div>
+            <div id="suggheader">DID YOU MEAN?</div>
+            <div class="searchResultsSuggested" id="suggestedTitles"></div>
+          </div>
+        </div>
+        <h1>Recent Searches</h1>
+        <div id="searchHistory"></div>
+      </div>
+    </div>
+
+    <script src="Scripts/GhPagesDemo.js"></script>
+    <script>
+      (function () {
+        var toast = document.getElementById('mockToast');
+        var closeBtn = document.getElementById('dismissMockToast');
+        if (!toast || !closeBtn) return;
+
+        setTimeout(function () {
+          toast.className += ' isVisible';
+        }, 120);
+
+        closeBtn.onclick = function () {
+          toast.className = toast.className.replace(' isVisible', '') + ' isHidden';
+          setTimeout(function () {
+            toast.style.display = 'none';
+          }, 220);
+        };
+      })();
+    </script>
+  </body>
 </html>
