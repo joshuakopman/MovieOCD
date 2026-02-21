@@ -1,5 +1,7 @@
 # MovieOCD
 
+![MovieOCD Screenshot](docs/images/movieocd-screenshot.png)
+
 MovieOCD is a legacy movie-rating aggregator originally built around 2011-2014.
 
 The app's goal is to search a movie title and display ratings from multiple providers in one place (historically IMDb, Rotten Tomatoes, and Netflix), along with recent searches.
