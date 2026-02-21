@@ -4,6 +4,15 @@ MovieOCD is a legacy movie-rating aggregator originally built around 2011-2014.
 
 The app's goal is to search a movie title and display ratings from multiple providers in one place (historically IMDb, Rotten Tomatoes, and Netflix), along with recent searches.
 
+## Historical functionality
+
+Originally, MovieOCD also included a Facebook-connected rating feature:
+- Users could connect via Facebook.
+- They could submit their own 1-5 star rating for a movie.
+- Ratings were tied to the Facebook user ID and could be retrieved later for the same user.
+
+That social/auth flow relied on legacy Facebook permissions and APIs that are no longer available in the same form.
+
 ## Current status
 
 Several original provider integrations and API access models used by this project were deprecated years ago (including Netflix public API access and legacy social publish permissions).
