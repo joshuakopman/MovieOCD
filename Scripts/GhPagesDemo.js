@@ -1,4 +1,4 @@
-(function () {
+(function ($) {
     var HISTORY_KEY = 'movieocd_recent_searches';
     var MAX_HISTORY = 8;
 
@@ -9,11 +9,14 @@
             director: 'Quentin Tarantino',
             imagePath: 'Images/pulp-fiction-poster.jpg',
             ratings: [
-                { displayName: 'IMDB', rating: '8.9', maxRating: '10', logoUrl: 'Images/imdb.jpg' },
-                { displayName: 'Netflix', rating: '4.5', maxRating: '5', logoUrl: 'Images/netflix.jpg' },
-                { displayName: 'Rotten Tomatoes', rating: '92', maxRating: '100', logoUrl: 'Images/tomatoes.jpg' }
+                { displayName: 'IMDB', rating: '8.9', maxRating: '10', logoUrl: 'Images/imdb.jpg', url: 'https://www.imdb.com/title/tt0110912/' },
+                { displayName: 'Netflix', rating: '4.5', maxRating: '5', logoUrl: 'Images/netflix.jpg', url: 'https://www.netflix.com/' },
+                { displayName: 'Rotten Tomatoes', rating: '92', maxRating: '100', logoUrl: 'Images/tomatoes.jpg', url: 'https://www.rottentomatoes.com/m/pulp_fiction' }
             ],
-            suggestedTitles: ['Reservoir Dogs (1992)', 'Jackie Brown (1997)']
+            suggestedTitles: [
+                { title: 'Reservoir Dogs', year: '1992' },
+                { title: 'Jackie Brown', year: '1997' }
+            ]
         },
         {
             title: 'Inception',
@@ -21,11 +24,14 @@
             director: 'Christopher Nolan',
             imagePath: 'Images/inception-poster.jpg',
             ratings: [
-                { displayName: 'IMDB', rating: '8.8', maxRating: '10', logoUrl: 'Images/imdb.jpg' },
-                { displayName: 'Netflix', rating: '4.4', maxRating: '5', logoUrl: 'Images/netflix.jpg' },
-                { displayName: 'Rotten Tomatoes', rating: '87', maxRating: '100', logoUrl: 'Images/tomatoes.jpg' }
+                { displayName: 'IMDB', rating: '8.8', maxRating: '10', logoUrl: 'Images/imdb.jpg', url: 'https://www.imdb.com/title/tt1375666/' },
+                { displayName: 'Netflix', rating: '4.4', maxRating: '5', logoUrl: 'Images/netflix.jpg', url: 'https://www.netflix.com/' },
+                { displayName: 'Rotten Tomatoes', rating: '87', maxRating: '100', logoUrl: 'Images/tomatoes.jpg', url: 'https://www.rottentomatoes.com/m/inception' }
             ],
-            suggestedTitles: ['Interstellar (2014)', 'Memento (2000)']
+            suggestedTitles: [
+                { title: 'Interstellar', year: '2014' },
+                { title: 'Memento', year: '2000' }
+            ]
         },
         {
             title: 'The Matrix',
@@ -33,11 +39,14 @@
             director: 'The Wachowskis',
             imagePath: 'Images/matrix-poster.jpg',
             ratings: [
-                { displayName: 'IMDB', rating: '8.7', maxRating: '10', logoUrl: 'Images/imdb.jpg' },
-                { displayName: 'Netflix', rating: '4.6', maxRating: '5', logoUrl: 'Images/netflix.jpg' },
-                { displayName: 'Rotten Tomatoes', rating: '83', maxRating: '100', logoUrl: 'Images/tomatoes.jpg' }
+                { displayName: 'IMDB', rating: '8.7', maxRating: '10', logoUrl: 'Images/imdb.jpg', url: 'https://www.imdb.com/title/tt0133093/' },
+                { displayName: 'Netflix', rating: '4.6', maxRating: '5', logoUrl: 'Images/netflix.jpg', url: 'https://www.netflix.com/' },
+                { displayName: 'Rotten Tomatoes', rating: '83', maxRating: '100', logoUrl: 'Images/tomatoes.jpg', url: 'https://www.rottentomatoes.com/m/matrix' }
             ],
-            suggestedTitles: ['The Matrix Reloaded (2003)', 'Dark City (1998)']
+            suggestedTitles: [
+                { title: 'The Matrix Reloaded', year: '2003' },
+                { title: 'Dark City', year: '1998' }
+            ]
         }
     ];
 
@@ -54,19 +63,23 @@
             .replace(/'/g, '&#39;');
     }
 
+    function cloneMovie(movie) {
+        return JSON.parse(JSON.stringify(movie));
+    }
+
     function findMovie(title) {
         var normalizedTitle = normalize(title);
         var i;
 
         for (i = 0; i < MOCK_MOVIES.length; i++) {
             if (normalize(MOCK_MOVIES[i].title) === normalizedTitle) {
-                return MOCK_MOVIES[i];
+                return cloneMovie(MOCK_MOVIES[i]);
             }
         }
 
         for (i = 0; i < MOCK_MOVIES.length; i++) {
-            if (normalize(MOCK_MOVIES[i].title).indexOf(normalizedTitle) >= 0 && normalizedTitle.length > 0) {
-                return MOCK_MOVIES[i];
+            if (normalizedTitle && normalize(MOCK_MOVIES[i].title).indexOf(normalizedTitle) >= 0) {
+                return cloneMovie(MOCK_MOVIES[i]);
             }
         }
 
@@ -110,42 +123,22 @@
         localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
     }
 
-    function renderHistory() {
-        var history = getRecentSearches();
-        var historyElement = $('#searchHistory');
-        var titleElement = $('h1');
-
-        historyElement.empty();
-
-        if (history.length === 0) {
-            historyElement.append('<div class="historyTitle">No recent searches yet.</div>');
-        }
-
-        $.each(history, function (_, movie) {
-            var row = $('<div class="historyTitle"></div>');
-            row.text(movie.title + ' (' + movie.year + ')');
-            row.click(function () {
-                renderMovie(movie, false);
-            });
-            historyElement.append(row);
-        });
-
-        titleElement.show();
-        historyElement.show();
-    }
-
     function renderRatings(ratings) {
+        var resultsElement = $('#results');
         var resultsDiv = $('#resultsDiv');
-        resultsDiv.empty();
+
+        resultsElement.empty();
+        resultsElement.append('<div id="resultsDiv"></div>');
+        resultsDiv = $('#resultsDiv');
 
         $.each(ratings, function (_, rating) {
-            var row = $('<div class="rating"></div>');
-            var logo = $('<img class="providerLogo" alt="Provider logo">');
-            logo.attr('src', rating.logoUrl);
-
-            row.append(logo);
-            row.append('&nbsp;&nbsp;&nbsp;' + escapeHtml(rating.rating + '/' + rating.maxRating));
-            resultsDiv.append(row);
+            if (rating.rating !== 'N/A' && rating.rating !== '-1') {
+                resultsDiv.append(
+                    '<a href="' + escapeHtml(rating.url || '#') + '" target="_blank">' +
+                    '<img class="providerLogo" src="' + escapeHtml(rating.logoUrl) + '" alt="' + escapeHtml(rating.displayName) + '"></a>' +
+                    '<p class="rating">' + escapeHtml(rating.rating) + '/' + escapeHtml(rating.maxRating) + '</p><br/>'
+                );
+            }
         });
     }
 
@@ -153,25 +146,29 @@
         var suggestedElement = $('#suggestedTitles');
         suggestedElement.empty();
 
-        $.each(suggestedTitles || [], function (_, title) {
-            suggestedElement.append('<div class="suggTitle">' + escapeHtml(title) + '</div>');
+        $.each(suggestedTitles || [], function (_, item) {
+            var displayYear = item.year ? ' (' + item.year + ')' : '';
+            suggestedElement.append(
+                '<div class="suggTitle" movietitle="' + escapeHtml(item.title) + '" year="' + escapeHtml(item.year || '') + '">' +
+                escapeHtml(item.title) + displayYear + '</div><br/>'
+            );
         });
     }
 
     function renderMovie(movie, persistHistory) {
-        $('#progressbar').hide();
-        $('#displaySearchHistory').show();
+        var displayYear = movie.year ? '(' + movie.year + ')' : '';
+
         $('#bottomSearch').show();
+        $('#movieResult').show();
         $('#searchHistory').hide();
         $('h1').hide();
-
-        $('#movieImg').attr('src', movie.imagePath).show();
+        $('#displaySearchHistory').html('View Recent Searches').show();
 
         $('#foundTitle').html(
-            '<div class="searchTitle">' +
-            escapeHtml(movie.title) +
-            '<span style="font-size:68px;color:grey;"><br/>(' + escapeHtml(movie.year) + ')</span></div>'
+            '<div class="searchTitle"><div id="titleResult">' + escapeHtml(movie.title) + '</div>' + escapeHtml(displayYear) + ' </div>'
         ).show();
+
+        $('#movieImg').attr('src', movie.imagePath).show();
 
         renderRatings(movie.ratings);
         renderSuggestions(movie.suggestedTitles);
@@ -182,44 +179,122 @@
     }
 
     function renderNotFound(title) {
-        $('#progressbar').hide();
-        $('#displaySearchHistory').show();
-        $('#bottomSearch').show();
-
-        $('#movieImg').hide();
-        $('#resultsDiv').empty();
-
-        $('#foundTitle').html(
-            '<div class="searchTitle">Movie Not Found<span style="font-size:40px;color:grey;"><br/>' +
-            escapeHtml(title) +
-            '</span></div>'
-        ).show();
-
         var fallbackSuggestions = [];
         $.each(MOCK_MOVIES, function (_, movie) {
-            fallbackSuggestions.push(movie.title + ' (' + movie.year + ')');
+            fallbackSuggestions.push({ title: movie.title, year: movie.year });
         });
 
+        $('#bottomSearch').show();
+        $('#movieResult').show();
+        $('#searchHistory').hide();
+        $('h1').hide();
+
+        $('#movieImg').hide();
+        $('#results').empty().append('<div id="resultsDiv"></div>');
+        $('#foundTitle').html('<div class="searchTitle">Movie Not Found</div>').show();
         renderSuggestions(fallbackSuggestions);
+
+        $('#displaySearchHistory').html('View Recent Searches').show();
+        $('#txtMovieName').val(title);
     }
 
-    function searchForTitle() {
-        var textbox = $('#txtMovieName');
-        var title = $.trim(textbox.val());
+    function renderHistoryView() {
+        var history = getRecentSearches();
+        var searchHistory = $('#searchHistory');
 
-        if (!title || title === 'Search Titles') {
+        searchHistory.html('<div id="historyList"></div>').show();
+
+        if (history.length === 0) {
+            searchHistory.append('<div class="historyTitle">No recent searches yet.</div>');
+            return;
+        }
+
+        $.each(history, function (_, movie) {
+            var displayYear = movie.year ? ' (' + movie.year + ')' : '';
+            var row = $('<div class="historyTitle" movietitle="' + escapeHtml(movie.title) + '" year="' + escapeHtml(movie.year || '') + '">' +
+                escapeHtml(movie.title) + displayYear + '</div>');
+            var ratings = $('<div class="historyRatings"></div>');
+
+            $.each(movie.ratings || [], function (_, rating) {
+                ratings.append('<img class="thumbnail" src="' + escapeHtml(rating.logoUrl) + '" alt="' + escapeHtml(rating.displayName) + '"> ' +
+                    escapeHtml(rating.rating) + ' / ' + escapeHtml(rating.maxRating) + ' ');
+            });
+
+            searchHistory.append(row);
+            searchHistory.append(ratings);
+        });
+    }
+
+    function showHistoryWithFlip() {
+        var mainContent = $('.mainContent');
+
+        function complete() {
+            $('#displaySearchHistory').html('Back To Movie Results');
+            $('#movieResult').hide();
+            $('h1').show();
+            renderHistoryView();
+        }
+
+        if ($.fn.flip) {
+            mainContent.flip({
+                direction: 'lr',
+                color: 'lightgrey',
+                onEnd: complete
+            });
+        } else {
+            complete();
+        }
+    }
+
+    function showResultsWithFlip() {
+        var mainContent = $('.mainContent');
+
+        function complete() {
+            $('#displaySearchHistory').html('View Recent Searches');
+            $('#movieResult').show();
+            $('h1').hide();
+            $('#searchHistory').hide();
+        }
+
+        if ($.fn.flip) {
+            mainContent.flip({
+                direction: 'rl',
+                color: 'lightgrey',
+                onEnd: complete
+            });
+        } else {
+            complete();
+        }
+    }
+
+    function toggleHistory() {
+        if ($('#displaySearchHistory').html() === 'View Recent Searches') {
+            showHistoryWithFlip();
+        } else {
+            showResultsWithFlip();
+        }
+    }
+
+    function runSearch() {
+        var textbox = $('#txtMovieName');
+        var query = $.trim(textbox.val());
+
+        if (!query || query === 'Search Titles') {
             return;
         }
 
         $('#progressbar').show();
 
         window.setTimeout(function () {
-            var movie = findMovie(title);
+            var movie = findMovie(query);
+
             if (movie) {
                 renderMovie(movie, true);
             } else {
-                renderNotFound(title);
+                renderNotFound(query);
             }
+
+            $('#progressbar').hide();
             textbox.blur();
         }, 180);
     }
@@ -227,36 +302,53 @@
     function wireEvents() {
         var textbox = $('#txtMovieName');
 
-        $('#btnSubmit').click(function (event) {
+        $('#btnSubmit').on('click', function (event) {
             event.preventDefault();
-            searchForTitle();
+            runSearch();
         });
 
-        textbox.keypress(function (event) {
+        textbox.on('keypress', function (event) {
             if (event.which === 13) {
                 event.preventDefault();
-                searchForTitle();
+                runSearch();
             }
         });
 
-        textbox.focus(function () {
+        textbox.on('focus', function () {
             if ($(this).val() === 'Search Titles') {
                 $(this).val('');
             }
         });
 
-        textbox.blur(function () {
+        textbox.on('blur', function () {
             if ($.trim($(this).val()) === '') {
                 $(this).val('Search Titles');
             }
         });
 
-        $('#displaySearchHistory').click(function () {
-            renderHistory();
+        $('#displaySearchHistory').on('click', function () {
+            toggleHistory();
+        });
+
+        $(document).on('click', '.suggTitle', function () {
+            var title = $(this).attr('movietitle') || $(this).text();
+            $('#txtMovieName').val(title);
+            runSearch();
+        });
+
+        $(document).on('click', '.historyTitle', function () {
+            var title = $(this).attr('movietitle');
+            var movie = findMovie(title);
+            if (movie) {
+                renderMovie(movie, false);
+                showResultsWithFlip();
+            }
         });
     }
 
     $(function () {
+        $('#progressbar').hide();
+        $('#displaySearchHistory').show();
         wireEvents();
     });
-})();
+})(jQuery);

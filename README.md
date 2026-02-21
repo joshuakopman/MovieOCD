@@ -4,18 +4,27 @@ MovieOCD is a legacy movie-rating aggregator originally built around 2011-2014.
 
 The app's goal is to search a movie title and display ratings from multiple providers in one place (historically IMDb, Rotten Tomatoes, and Netflix), along with recent searches.
 
-## Why the current demo is mocked
+## Historical functionality
+
+Originally, MovieOCD also included a Facebook-connected rating feature:
+- Users could connect via Facebook.
+- They could submit their own 1-5 star rating for a movie.
+- Ratings were tied to the Facebook user ID and could be retrieved later for the same user.
+
+That social/auth flow relied on legacy Facebook permissions and APIs that are no longer available in the same form.
+
+## Current status
 
 Several original provider integrations and API access models used by this project were deprecated years ago (including Netflix public API access and legacy social publish permissions).
 
-To preserve the original product idea for portfolio/demo purposes, this repository now includes a mocked demo mode with curated sample results.
+To preserve the original product idea for portfolio/demo purposes, this repository includes a mocked demo mode with curated sample results.
 
 Mock titles currently supported:
 - Pulp Fiction
 - Inception
 - The Matrix
 
-## Branches and usage
+## Branches
 
 - `master`: Original ASP.NET MVC/Web API codebase with compatibility fixes and mock-data fallback support.
 - `codex/gh-pages-demo`: Static GitHub Pages-friendly demo branch (no backend required) that showcases the MovieOCD experience with mocked data.
@@ -24,8 +33,6 @@ Mock titles currently supported:
 
 This is a legacy .NET Framework-era app. On macOS/Linux, it can be run with Mono/xsp in compatible environments.
 
-Example (from repo root):
-
 ```bash
 msbuild MovieOCD.sln /p:Configuration=Debug
 xsp4 --port 56357 --root .
@@ -33,13 +40,12 @@ xsp4 --port 56357 --root .
 
 Then open `http://127.0.0.1:56357`.
 
-## GitHub Pages demo setup (same repo, no new repo)
+## GitHub Pages demo (same repo)
 
-To host the static demo for portfolio viewing:
+GitHub Pages cannot run the ASP.NET backend on `master`. Use the static demo branch:
 
-1. Push the `codex/gh-pages-demo` branch.
-2. In GitHub repo settings, open **Pages**.
-3. Set source branch to `codex/gh-pages-demo` and folder to `/ (root)`.
-4. Save and wait for deployment.
+1. In GitHub repo settings, open **Pages**.
+2. Set source branch to `codex/gh-pages-demo` and folder to `/ (root)`.
+3. Save and wait for deployment.
 
-The published site will use mocked movie data and preserve recent searches in browser local storage.
+The published site uses mocked movie data and keeps recent searches in browser local storage.
