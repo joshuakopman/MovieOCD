@@ -1,6 +1,8 @@
 (function ($) {
     var HISTORY_KEY = 'movieocd_recent_searches';
     var MAX_HISTORY = 8;
+    var demoRatings = {};
+    var currentMovieKey = '';
 
     var MOCK_MOVIES = [
         {
@@ -157,6 +159,7 @@
 
     function renderMovie(movie, persistHistory) {
         var displayYear = movie.year ? '(' + movie.year + ')' : '';
+        currentMovieKey = normalize(movie.title);
 
         $('#bottomSearch').show();
         $('#movieResult').show();
@@ -169,6 +172,7 @@
         ).show();
 
         $('#movieImg').attr('src', movie.imagePath).show();
+        renderDemoRatingState();
 
         renderRatings(movie.ratings);
         renderSuggestions(movie.suggestedTitles);
@@ -190,6 +194,7 @@
         $('h1').hide();
 
         $('#movieImg').hide();
+        $('#rateMyMovie,#rateMyMovieText,#stars,.ratingValue').hide();
         $('#results').empty().append('<div id="resultsDiv"></div>');
         $('#foundTitle').html('<div class="searchTitle">Movie Not Found</div>').show();
         renderSuggestions(fallbackSuggestions);
@@ -344,6 +349,36 @@
                 showResultsWithFlip();
             }
         });
+
+        $(document).on('mouseenter', '#movieImage', function () {
+            if (!currentMovieKey) {
+                return;
+            }
+            $('#rateMyMovie,#rateMyMovieText,#stars,.ratingValue').show();
+        });
+
+        $(document).on('mouseleave', '#movieImage', function () {
+            $('#rateMyMovie,#rateMyMovieText,#stars,.ratingValue').hide();
+        });
+
+        $('#stars').on('rated', function (_, value) {
+            if (!currentMovieKey) {
+                return;
+            }
+            demoRatings[currentMovieKey] = value;
+            $('#value5').text('Your demo rating: ' + value + ' stars');
+        });
+    }
+
+    function renderDemoRatingState() {
+        var saved = demoRatings[currentMovieKey];
+        $('#stars').rateit('value', saved || null);
+        if (saved) {
+            $('#value5').text('Your demo rating: ' + saved + ' stars');
+        } else {
+            $('#value5').text('');
+        }
+        $('#rateMyMovie,#rateMyMovieText,#stars,.ratingValue').hide();
     }
 
     $(function () {

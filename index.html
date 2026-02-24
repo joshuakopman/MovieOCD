@@ -13,6 +13,7 @@
     <link rel="stylesheet" media="screen and (min-device-width : 320px) and (max-width : 640px)" href="Styles/searchMobile.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
     <script src="Scripts/jquery.flip.min.js"></script>
+    <script src="Scripts/jquery.rateit.min.js"></script>
   </head>
   <body>
     <div id="mockToast" class="mockToast" role="status" aria-live="polite">
@@ -47,6 +48,12 @@
         <div id="movieResult">
           <div id="movieImage">
             <img id="movieImg" alt="Movie poster">
+            <img id="rateMyMovie" src="Images/rate.png" alt="Rate this movie">
+            <div id="rateMyMovieText">Rate this movie</div>
+            <div id="stars" class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false"></div>
+            <div>
+              <span class="ratingValue" id="value5"></span>
+            </div>
           </div>
           <div id="movieContent">
             <div id="foundTitle"></div>
