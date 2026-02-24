@@ -235,32 +235,75 @@
         var mainContent = $('.mainContent');
         var priorPointerEvents = mainContent.css('pointer-events');
         var priorBackground = mainContent.css('background-color');
+        var halfDurationMs = 180;
+        var sign = direction === 'lr' ? 1 : -1;
 
-        if (isFlipping || !$.fn.flip) {
+        if (isFlipping) {
             return;
         }
 
         isFlipping = true;
         mainContent.css({
             'pointer-events': 'none',
-            'background-color': 'lightgrey'
+            'background-color': '#d3d3d3',
+            'backface-visibility': 'hidden',
+            '-webkit-backface-visibility': 'hidden',
+            'transform-style': 'preserve-3d',
+            '-webkit-transform-style': 'preserve-3d',
+            'will-change': 'transform',
+            'transform-origin': sign > 0 ? 'left center' : 'right center',
+            '-webkit-transform-origin': sign > 0 ? 'left center' : 'right center'
         });
 
-        mainContent.flip({
-            direction: direction,
-            onEnd: function () {
-                try {
-                    onEnd();
-                } finally {
-                    isFlipping = false;
-                    mainContent.css({
-                        'pointer-events': priorPointerEvents || '',
-                        'background-color': priorBackground || ''
-                    });
-                }
-            },
-            color: 'lightgrey'
+        function finish() {
+            mainContent.css({
+                'transition': '',
+                '-webkit-transition': '',
+                'transform': '',
+                '-webkit-transform': '',
+                'transform-origin': '',
+                '-webkit-transform-origin': '',
+                'will-change': '',
+                'backface-visibility': '',
+                '-webkit-backface-visibility': '',
+                'transform-style': '',
+                '-webkit-transform-style': '',
+                'pointer-events': priorPointerEvents || '',
+                'background-color': priorBackground || ''
+            });
+            isFlipping = false;
+        }
+
+        mainContent.css({
+            'transition': 'transform ' + halfDurationMs + 'ms ease-in',
+            '-webkit-transition': '-webkit-transform ' + halfDurationMs + 'ms ease-in',
+            'transform': 'perspective(1200px) rotateY(' + (sign * 90) + 'deg)',
+            '-webkit-transform': 'perspective(1200px) rotateY(' + (sign * 90) + 'deg)'
         });
+
+        window.setTimeout(function () {
+            mainContent.css({
+                'transition': 'none',
+                '-webkit-transition': 'none',
+                'transform': 'perspective(1200px) rotateY(' + (-sign * 90) + 'deg)',
+                '-webkit-transform': 'perspective(1200px) rotateY(' + (-sign * 90) + 'deg)'
+            });
+
+            if (mainContent.length && mainContent[0]) {
+                mainContent[0].offsetHeight;
+            }
+
+            onEnd();
+
+            mainContent.css({
+                'transition': 'transform ' + halfDurationMs + 'ms ease-out',
+                '-webkit-transition': '-webkit-transform ' + halfDurationMs + 'ms ease-out',
+                'transform': 'perspective(1200px) rotateY(0deg)',
+                '-webkit-transform': 'perspective(1200px) rotateY(0deg)'
+            });
+
+            window.setTimeout(finish, halfDurationMs + 20);
+        }, halfDurationMs);
     }
 
     function flipResults() {
@@ -339,7 +382,7 @@
         });
 
         $('#displaySearchHistory').on('click', function () {
-            if (!isFlipping && $.fn.flip) {
+            if (!isFlipping) {
                 flipResults();
             }
         });
@@ -355,7 +398,7 @@
             var movie = findMovie(title);
             if (movie) {
                 renderMovie(movie, false);
-                if ($.fn.flip && $('#displaySearchHistory').html() === 'Back To Movie Results') {
+                if ($('#displaySearchHistory').html() === 'Back To Movie Results') {
                     flipResults();
                 }
             }
