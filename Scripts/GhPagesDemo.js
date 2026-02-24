@@ -3,6 +3,7 @@
     var MAX_HISTORY = 8;
     var demoRatings = {};
     var currentMovieKey = '';
+    var isFlipping = false;
 
     var MOCK_MOVIES = [
         {
@@ -230,32 +231,58 @@
         });
     }
 
-    function flipResults() {
+    function runFlip(direction, onEnd) {
         var mainContent = $('.mainContent');
+        var priorPointerEvents = mainContent.css('pointer-events');
+        var priorBackground = mainContent.css('background-color');
+
+        if (isFlipping || !$.fn.flip) {
+            return;
+        }
+
+        isFlipping = true;
+        mainContent.css({
+            'pointer-events': 'none',
+            'background-color': 'lightgrey'
+        });
+
+        mainContent.flip({
+            direction: direction,
+            onEnd: function () {
+                try {
+                    onEnd();
+                } finally {
+                    isFlipping = false;
+                    mainContent.css({
+                        'pointer-events': priorPointerEvents || '',
+                        'background-color': priorBackground || ''
+                    });
+                }
+            },
+            color: 'lightgrey'
+        });
+    }
+
+    function flipResults() {
         var displaySearchHistory = $('#displaySearchHistory');
         var searchHistory = $('#searchHistory');
 
         if (displaySearchHistory.html() === 'View Recent Searches') {
-            mainContent.flip({
-                direction: 'lr',
-                onEnd: function () {
-                    displaySearchHistory.html('Back To Movie Results');
-                    $('#movieResult').hide();
-                    $('h1').show();
-                    renderHistoryView();
-                },
-                color: 'lightgrey'
+            renderHistoryView();
+            searchHistory.hide();
+
+            runFlip('lr', function () {
+                displaySearchHistory.html('Back To Movie Results');
+                $('#movieResult').hide();
+                $('h1').show();
+                searchHistory.show();
             });
         } else {
-            mainContent.flip({
-                direction: 'rl',
-                onEnd: function () {
-                    displaySearchHistory.html('View Recent Searches');
-                    $('#movieResult').show();
-                    $('h1').hide();
-                    searchHistory.hide();
-                },
-                color: 'lightgrey'
+            runFlip('rl', function () {
+                displaySearchHistory.html('View Recent Searches');
+                $('#movieResult').show();
+                $('h1').hide();
+                searchHistory.hide();
             });
         }
     }
@@ -312,7 +339,7 @@
         });
 
         $('#displaySearchHistory').on('click', function () {
-            if ($.fn.flip) {
+            if (!isFlipping && $.fn.flip) {
                 flipResults();
             }
         });
