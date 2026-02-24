@@ -230,53 +230,33 @@
         });
     }
 
-    function showHistoryWithFlip() {
+    function flipResults() {
         var mainContent = $('.mainContent');
+        var displaySearchHistory = $('#displaySearchHistory');
+        var searchHistory = $('#searchHistory');
 
-        function complete() {
-            $('#displaySearchHistory').html('Back To Movie Results');
-            $('#movieResult').hide();
-            $('h1').show();
-            renderHistoryView();
-        }
-
-        if ($.fn.flip) {
+        if (displaySearchHistory.html() === 'View Recent Searches') {
             mainContent.flip({
                 direction: 'lr',
-                color: 'lightgrey',
-                onEnd: complete
+                onEnd: function () {
+                    displaySearchHistory.html('Back To Movie Results');
+                    $('#movieResult').hide();
+                    $('h1').show();
+                    renderHistoryView();
+                },
+                color: 'lightgrey'
             });
         } else {
-            complete();
-        }
-    }
-
-    function showResultsWithFlip() {
-        var mainContent = $('.mainContent');
-
-        function complete() {
-            $('#displaySearchHistory').html('View Recent Searches');
-            $('#movieResult').show();
-            $('h1').hide();
-            $('#searchHistory').hide();
-        }
-
-        if ($.fn.flip) {
             mainContent.flip({
                 direction: 'rl',
-                color: 'lightgrey',
-                onEnd: complete
+                onEnd: function () {
+                    displaySearchHistory.html('View Recent Searches');
+                    $('#movieResult').show();
+                    $('h1').hide();
+                    searchHistory.hide();
+                },
+                color: 'lightgrey'
             });
-        } else {
-            complete();
-        }
-    }
-
-    function toggleHistory() {
-        if ($('#displaySearchHistory').html() === 'View Recent Searches') {
-            showHistoryWithFlip();
-        } else {
-            showResultsWithFlip();
         }
     }
 
@@ -332,7 +312,9 @@
         });
 
         $('#displaySearchHistory').on('click', function () {
-            toggleHistory();
+            if ($.fn.flip) {
+                flipResults();
+            }
         });
 
         $(document).on('click', '.suggTitle', function () {
@@ -346,7 +328,9 @@
             var movie = findMovie(title);
             if (movie) {
                 renderMovie(movie, false);
-                showResultsWithFlip();
+                if ($.fn.flip && $('#displaySearchHistory').html() === 'Back To Movie Results') {
+                    flipResults();
+                }
             }
         });
 
